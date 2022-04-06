@@ -32,7 +32,7 @@ jobs:
     steps:
       # [see note: pytorch repo ref]
       - name: Checkout PyTorch
-        uses: pytorch/pytorch/.github/actions/checkout-pytorch@fff0d3913b45b6b5cd654f8982b4a1e812e1bf37
+        uses: pytorch/pytorch/.github/actions/checkout-pytorch@e0878fe5e4ea50a41cfc280efbb1baf6c24a39a6
 
       - name: Setup Linux
         uses: ./.github/actions/setup-linux
