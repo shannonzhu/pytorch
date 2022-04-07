@@ -8,8 +8,8 @@ on:
   push:
     branches:
       - master
-      - 'ciflow/all/*'
-      - 'ciflow/trunk/*'
+      - "ciflow/all/*"
+      - "ciflow/trunk/*"
   workflow_dispatch:
 
 env:
@@ -87,7 +87,7 @@ jobs:
           echo "PYTORCH_FINAL_PACKAGE_DIR=${RUNNER_TEMP}/artifacts" >> "${GITHUB_ENV}"
           echo "WIN_PACKAGE_WORK_DIR=${RUNNER_TEMP}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -98,7 +98,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -137,7 +137,7 @@ jobs:
         if: always()
         run: |
           .github\scripts\kill_active_ssh_sessions.ps1
-  libtorch-cpu-shared-with-deps-debug-test:  # Testing
+  libtorch-cpu-shared-with-deps-debug-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: libtorch-cpu-shared-with-deps-debug-build
     runs-on: windows.4xlarge
@@ -199,7 +199,7 @@ jobs:
           name: libtorch-cpu-shared-with-deps-debug
           path: "${{ env.PYTORCH_FINAL_PACKAGE_DIR }}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -210,7 +210,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive

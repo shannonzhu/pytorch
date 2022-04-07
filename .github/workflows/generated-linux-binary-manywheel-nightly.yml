@@ -13,8 +13,8 @@ on:
       # NOTE: Binary build pipelines should only get triggered on release candidate builds
       # Release candidate tags look like: v1.11.0-rc1
       - v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+
-      - 'ciflow/binaries/*'
-      - 'ciflow/binaries_wheel/*'
+      - "ciflow/binaries/*"
+      - "ciflow/binaries_wheel/*"
   workflow_dispatch:
 
 env:
@@ -106,7 +106,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -117,7 +117,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -174,8 +174,7 @@ jobs:
           name: manywheel-py3_7-cpu
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -194,7 +193,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_7-cpu-test:  # Testing
+  manywheel-py3_7-cpu-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_7-cpu-build
     runs-on: linux.4xlarge
@@ -266,7 +265,7 @@ jobs:
           name: manywheel-py3_7-cpu
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -277,7 +276,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -345,8 +344,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_7-cpu-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_7-cpu-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_7-cpu-test
     env:
@@ -535,7 +534,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -546,7 +545,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -603,8 +602,7 @@ jobs:
           name: manywheel-py3_7-cuda10_2
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -623,7 +621,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_7-cuda10_2-test:  # Testing
+  manywheel-py3_7-cuda10_2-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_7-cuda10_2-build
     runs-on: linux.4xlarge.nvidia.gpu
@@ -696,7 +694,7 @@ jobs:
           name: manywheel-py3_7-cuda10_2
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -707,7 +705,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -786,8 +784,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_7-cuda10_2-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_7-cuda10_2-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_7-cuda10_2-test
     env:
@@ -977,7 +975,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -988,7 +986,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -1048,8 +1046,7 @@ jobs:
           name: manywheel-py3_7-cuda11_3
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -1068,7 +1065,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_7-cuda11_3-test:  # Testing
+  manywheel-py3_7-cuda11_3-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_7-cuda11_3-build
     runs-on: linux.4xlarge.nvidia.gpu
@@ -1141,7 +1138,7 @@ jobs:
           name: manywheel-py3_7-cuda11_3
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -1152,7 +1149,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -1231,8 +1228,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_7-cuda11_3-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_7-cuda11_3-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_7-cuda11_3-test
     env:
@@ -1422,7 +1419,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -1433,7 +1430,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -1493,8 +1490,7 @@ jobs:
           name: manywheel-py3_7-cuda11_5
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -1513,7 +1509,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_7-cuda11_5-test:  # Testing
+  manywheel-py3_7-cuda11_5-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_7-cuda11_5-build
     runs-on: linux.4xlarge.nvidia.gpu
@@ -1586,7 +1582,7 @@ jobs:
           name: manywheel-py3_7-cuda11_5
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -1597,7 +1593,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -1676,8 +1672,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_7-cuda11_5-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_7-cuda11_5-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_7-cuda11_5-test
     env:
@@ -1867,7 +1863,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -1878,7 +1874,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -1935,8 +1931,7 @@ jobs:
           name: manywheel-py3_7-rocm4_5_2
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -1955,7 +1950,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_7-rocm4_5_2-test:  # Testing
+  manywheel-py3_7-rocm4_5_2-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_7-rocm4_5_2-build
     runs-on: linux.4xlarge
@@ -2028,7 +2023,7 @@ jobs:
           name: manywheel-py3_7-rocm4_5_2
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -2039,7 +2034,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -2107,8 +2102,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_7-rocm4_5_2-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_7-rocm4_5_2-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_7-rocm4_5_2-test
     env:
@@ -2298,7 +2293,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -2309,7 +2304,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -2366,8 +2361,7 @@ jobs:
           name: manywheel-py3_7-rocm5_0
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -2386,7 +2380,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_7-rocm5_0-test:  # Testing
+  manywheel-py3_7-rocm5_0-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_7-rocm5_0-build
     runs-on: linux.4xlarge
@@ -2459,7 +2453,7 @@ jobs:
           name: manywheel-py3_7-rocm5_0
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -2470,7 +2464,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -2538,8 +2532,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_7-rocm5_0-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_7-rocm5_0-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_7-rocm5_0-test
     env:
@@ -2728,7 +2722,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -2739,7 +2733,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -2796,8 +2790,7 @@ jobs:
           name: manywheel-py3_8-cpu
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -2816,7 +2809,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_8-cpu-test:  # Testing
+  manywheel-py3_8-cpu-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_8-cpu-build
     runs-on: linux.4xlarge
@@ -2888,7 +2881,7 @@ jobs:
           name: manywheel-py3_8-cpu
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -2899,7 +2892,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -2967,8 +2960,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_8-cpu-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_8-cpu-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_8-cpu-test
     env:
@@ -3157,7 +3150,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -3168,7 +3161,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -3225,8 +3218,7 @@ jobs:
           name: manywheel-py3_8-cuda10_2
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -3245,7 +3237,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_8-cuda10_2-test:  # Testing
+  manywheel-py3_8-cuda10_2-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_8-cuda10_2-build
     runs-on: linux.4xlarge.nvidia.gpu
@@ -3318,7 +3310,7 @@ jobs:
           name: manywheel-py3_8-cuda10_2
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -3329,7 +3321,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -3408,8 +3400,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_8-cuda10_2-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_8-cuda10_2-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_8-cuda10_2-test
     env:
@@ -3599,7 +3591,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -3610,7 +3602,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -3670,8 +3662,7 @@ jobs:
           name: manywheel-py3_8-cuda11_3
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -3690,7 +3681,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_8-cuda11_3-test:  # Testing
+  manywheel-py3_8-cuda11_3-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_8-cuda11_3-build
     runs-on: linux.4xlarge.nvidia.gpu
@@ -3763,7 +3754,7 @@ jobs:
           name: manywheel-py3_8-cuda11_3
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -3774,7 +3765,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -3853,8 +3844,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_8-cuda11_3-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_8-cuda11_3-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_8-cuda11_3-test
     env:
@@ -4044,7 +4035,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -4055,7 +4046,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -4115,8 +4106,7 @@ jobs:
           name: manywheel-py3_8-cuda11_5
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -4135,7 +4125,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_8-cuda11_5-test:  # Testing
+  manywheel-py3_8-cuda11_5-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_8-cuda11_5-build
     runs-on: linux.4xlarge.nvidia.gpu
@@ -4208,7 +4198,7 @@ jobs:
           name: manywheel-py3_8-cuda11_5
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -4219,7 +4209,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -4298,8 +4288,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_8-cuda11_5-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_8-cuda11_5-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_8-cuda11_5-test
     env:
@@ -4489,7 +4479,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -4500,7 +4490,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -4557,8 +4547,7 @@ jobs:
           name: manywheel-py3_8-rocm4_5_2
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -4577,7 +4566,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_8-rocm4_5_2-test:  # Testing
+  manywheel-py3_8-rocm4_5_2-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_8-rocm4_5_2-build
     runs-on: linux.4xlarge
@@ -4650,7 +4639,7 @@ jobs:
           name: manywheel-py3_8-rocm4_5_2
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -4661,7 +4650,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -4729,8 +4718,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_8-rocm4_5_2-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_8-rocm4_5_2-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_8-rocm4_5_2-test
     env:
@@ -4920,7 +4909,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -4931,7 +4920,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -4988,8 +4977,7 @@ jobs:
           name: manywheel-py3_8-rocm5_0
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -5008,7 +4996,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_8-rocm5_0-test:  # Testing
+  manywheel-py3_8-rocm5_0-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_8-rocm5_0-build
     runs-on: linux.4xlarge
@@ -5081,7 +5069,7 @@ jobs:
           name: manywheel-py3_8-rocm5_0
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -5092,7 +5080,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -5160,8 +5148,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_8-rocm5_0-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_8-rocm5_0-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_8-rocm5_0-test
     env:
@@ -5350,7 +5338,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -5361,7 +5349,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -5418,8 +5406,7 @@ jobs:
           name: manywheel-py3_9-cpu
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -5438,7 +5425,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_9-cpu-test:  # Testing
+  manywheel-py3_9-cpu-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_9-cpu-build
     runs-on: linux.4xlarge
@@ -5510,7 +5497,7 @@ jobs:
           name: manywheel-py3_9-cpu
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -5521,7 +5508,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -5589,8 +5576,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_9-cpu-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_9-cpu-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_9-cpu-test
     env:
@@ -5779,7 +5766,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -5790,7 +5777,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -5847,8 +5834,7 @@ jobs:
           name: manywheel-py3_9-cuda10_2
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -5867,7 +5853,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_9-cuda10_2-test:  # Testing
+  manywheel-py3_9-cuda10_2-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_9-cuda10_2-build
     runs-on: linux.4xlarge.nvidia.gpu
@@ -5940,7 +5926,7 @@ jobs:
           name: manywheel-py3_9-cuda10_2
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -5951,7 +5937,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -6030,8 +6016,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_9-cuda10_2-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_9-cuda10_2-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_9-cuda10_2-test
     env:
@@ -6221,7 +6207,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -6232,7 +6218,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -6292,8 +6278,7 @@ jobs:
           name: manywheel-py3_9-cuda11_3
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -6312,7 +6297,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_9-cuda11_3-test:  # Testing
+  manywheel-py3_9-cuda11_3-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_9-cuda11_3-build
     runs-on: linux.4xlarge.nvidia.gpu
@@ -6385,7 +6370,7 @@ jobs:
           name: manywheel-py3_9-cuda11_3
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -6396,7 +6381,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -6475,8 +6460,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_9-cuda11_3-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_9-cuda11_3-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_9-cuda11_3-test
     env:
@@ -6666,7 +6651,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -6677,7 +6662,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -6737,8 +6722,7 @@ jobs:
           name: manywheel-py3_9-cuda11_5
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -6757,7 +6741,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_9-cuda11_5-test:  # Testing
+  manywheel-py3_9-cuda11_5-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_9-cuda11_5-build
     runs-on: linux.4xlarge.nvidia.gpu
@@ -6830,7 +6814,7 @@ jobs:
           name: manywheel-py3_9-cuda11_5
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -6841,7 +6825,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -6920,8 +6904,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_9-cuda11_5-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_9-cuda11_5-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_9-cuda11_5-test
     env:
@@ -7111,7 +7095,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -7122,7 +7106,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -7179,8 +7163,7 @@ jobs:
           name: manywheel-py3_9-rocm4_5_2
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -7199,7 +7182,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_9-rocm4_5_2-test:  # Testing
+  manywheel-py3_9-rocm4_5_2-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_9-rocm4_5_2-build
     runs-on: linux.4xlarge
@@ -7272,7 +7255,7 @@ jobs:
           name: manywheel-py3_9-rocm4_5_2
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -7283,7 +7266,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -7351,8 +7334,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_9-rocm4_5_2-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_9-rocm4_5_2-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_9-rocm4_5_2-test
     env:
@@ -7542,7 +7525,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -7553,7 +7536,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -7610,8 +7593,7 @@ jobs:
           name: manywheel-py3_9-rocm5_0
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -7630,7 +7612,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_9-rocm5_0-test:  # Testing
+  manywheel-py3_9-rocm5_0-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_9-rocm5_0-build
     runs-on: linux.4xlarge
@@ -7703,7 +7685,7 @@ jobs:
           name: manywheel-py3_9-rocm5_0
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -7714,7 +7696,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -7782,8 +7764,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_9-rocm5_0-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_9-rocm5_0-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_9-rocm5_0-test
     env:
@@ -7972,7 +7954,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -7983,7 +7965,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -8040,8 +8022,7 @@ jobs:
           name: manywheel-py3_10-cpu
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -8060,7 +8041,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_10-cpu-test:  # Testing
+  manywheel-py3_10-cpu-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_10-cpu-build
     runs-on: linux.4xlarge
@@ -8132,7 +8113,7 @@ jobs:
           name: manywheel-py3_10-cpu
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -8143,7 +8124,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -8211,8 +8192,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_10-cpu-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_10-cpu-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_10-cpu-test
     env:
@@ -8401,7 +8382,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -8412,7 +8393,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -8469,8 +8450,7 @@ jobs:
           name: manywheel-py3_10-cuda10_2
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -8489,7 +8469,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_10-cuda10_2-test:  # Testing
+  manywheel-py3_10-cuda10_2-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_10-cuda10_2-build
     runs-on: linux.4xlarge.nvidia.gpu
@@ -8562,7 +8542,7 @@ jobs:
           name: manywheel-py3_10-cuda10_2
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -8573,7 +8553,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -8652,8 +8632,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_10-cuda10_2-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_10-cuda10_2-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_10-cuda10_2-test
     env:
@@ -8843,7 +8823,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -8854,7 +8834,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -8914,8 +8894,7 @@ jobs:
           name: manywheel-py3_10-cuda11_3
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -8934,7 +8913,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_10-cuda11_3-test:  # Testing
+  manywheel-py3_10-cuda11_3-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_10-cuda11_3-build
     runs-on: linux.4xlarge.nvidia.gpu
@@ -9007,7 +8986,7 @@ jobs:
           name: manywheel-py3_10-cuda11_3
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -9018,7 +8997,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -9097,8 +9076,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_10-cuda11_3-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_10-cuda11_3-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_10-cuda11_3-test
     env:
@@ -9288,7 +9267,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -9299,7 +9278,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -9359,8 +9338,7 @@ jobs:
           name: manywheel-py3_10-cuda11_5
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -9379,7 +9357,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_10-cuda11_5-test:  # Testing
+  manywheel-py3_10-cuda11_5-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_10-cuda11_5-build
     runs-on: linux.4xlarge.nvidia.gpu
@@ -9452,7 +9430,7 @@ jobs:
           name: manywheel-py3_10-cuda11_5
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -9463,7 +9441,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -9542,8 +9520,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_10-cuda11_5-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_10-cuda11_5-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_10-cuda11_5-test
     env:
@@ -9733,7 +9711,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -9744,7 +9722,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -9801,8 +9779,7 @@ jobs:
           name: manywheel-py3_10-rocm4_5_2
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -9821,7 +9798,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_10-rocm4_5_2-test:  # Testing
+  manywheel-py3_10-rocm4_5_2-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_10-rocm4_5_2-build
     runs-on: linux.4xlarge
@@ -9894,7 +9871,7 @@ jobs:
           name: manywheel-py3_10-rocm4_5_2
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -9905,7 +9882,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -9973,8 +9950,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_10-rocm4_5_2-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_10-rocm4_5_2-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_10-rocm4_5_2-test
     env:
@@ -10164,7 +10141,7 @@ jobs:
         run: |
           env | grep '^GITHUB' > "/tmp/github_env_${GITHUB_RUN_ID}"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -10175,7 +10152,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -10232,8 +10209,7 @@ jobs:
           name: manywheel-py3_10-rocm5_0
           retention-days: 14
           if-no-files-found: error
-          path:
-            ${{ runner.temp }}/artifacts/*
+          path: ${{ runner.temp }}/artifacts/*
       - name: Hold runner for 2 hours or until ssh sessions have drained
         working-directory: pytorch/
         # Always hold for active ssh sessions
@@ -10252,7 +10228,7 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_10-rocm5_0-test:  # Testing
+  manywheel-py3_10-rocm5_0-test: # Testing
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_10-rocm5_0-build
     runs-on: linux.4xlarge
@@ -10325,7 +10301,7 @@ jobs:
           name: manywheel-py3_10-rocm5_0
           path: "${{ runner.temp }}/artifacts/"
       - name: Checkout PyTorch
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           submodules: recursive
@@ -10336,7 +10312,7 @@ jobs:
           git clean -fxd
         working-directory: pytorch
       - name: Checkout pytorch/builder
-        uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
+        uses: clee2000/checkout@4a159627004ad299b31de1245cbf6f11502facf4
         with:
           ref: main
           submodules: recursive
@@ -10404,8 +10380,8 @@ jobs:
           docker stop $(docker ps -q) || true
           # Prune all of the docker images
           docker system prune -af
-  manywheel-py3_10-rocm5_0-upload:  # Uploading
-    runs-on: linux.2xlarge  # self hosted runner to download ec2 artifacts
+  manywheel-py3_10-rocm5_0-upload: # Uploading
+    runs-on: linux.2xlarge # self hosted runner to download ec2 artifacts
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: manywheel-py3_10-rocm5_0-test
     env:
