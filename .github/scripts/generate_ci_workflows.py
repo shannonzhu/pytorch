@@ -667,6 +667,15 @@ LINUX_WORKFLOWS = [
             labels=set([LABEL_CIFLOW_DEFAULT, LABEL_CIFLOW_LINUX, LABEL_CIFLOW_CUDA]),
         ),
     ),
+    CIWorkflow(
+        arch="linux",
+        build_environment="linux-bionic-cuda11.3-py3.7-clang9",
+        docker_image_base=f"{DOCKER_REGISTRY}/pytorch/pytorch-linux-bionic-cuda11.3-cudnn8-py3-clang9",
+        test_runner_type=LINUX_CUDA_TEST_RUNNER,
+        ciflow_config=CIFlowConfig(
+            labels=set([LABEL_CIFLOW_DEFAULT, LABEL_CIFLOW_LINUX, LABEL_CIFLOW_CUDA]),
+        ),
+    ),
     # no-ops builds test USE_PER_OPERATOR_HEADERS=0 where ATen/ops is not generated
     CIWorkflow(
         arch="linux",
