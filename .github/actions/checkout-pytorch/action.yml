@@ -27,12 +27,13 @@ runs:
       uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
       with:
         ref: viable/strict
+        fetch-depth: ""
 
     - name: Checkout PyTorch
       uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
       with:
         ref: master
-        fetch-depth: 2
+        fetch-depth: ""
     - name: Checkout PyTorch
       uses: zhouzhuojie/checkout@05b13c9a0d21f08f6d5e64a1d5042246d13619d9
       with:
