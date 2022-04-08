@@ -1,7 +1,7 @@
 #pragma once
 
 #include <torch/csrc/Export.h>
-#include <torch/csrc/jit/passes/pass_manager.h>
+#include <torch/csrc/jit/ir/ir.h>
 #include <memory>
 
 namespace torch {
@@ -28,6 +28,7 @@ TORCH_API bool texprReductionsEnabled();
 
 TORCH_API void RemoveProfileNodesAndSpecializeTypes(
     std::shared_ptr<Graph>& graph);
+TORCH_API bool hasTensorTypeSpecialization(Value* v);
 TORCH_API void RemoveTensorTypeSpecializations(std::shared_ptr<Graph>& graph);
 TORCH_API void removeTensorTypeSpecializations(Block* block);
 
@@ -60,6 +61,13 @@ TORCH_API Value* broadcastSizes(at::ArrayRef<Value*> sizes, AliasDb* db);
 
 namespace tensorexpr {
 TORCH_API bool isSupported(Node* node);
+
+// These functions are used in test_profiler.py to make sure
+// that tensor type specializations are available in the
+// CustomPasses.
+TORCH_API void addTensorTypeSpecializationDetectionPass();
+TORCH_API void removeTensorTypeSpecializationDetectionPass();
+TORCH_API bool passDetectedSpecializedTensors();
 } // namespace tensorexpr
 } // namespace jit
 } // namespace torch
